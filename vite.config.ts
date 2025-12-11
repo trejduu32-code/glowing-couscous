@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
           allowedHosts: [
       'glowing-couscous-1n6g.onrender.com'
     ]
-        port: 3000,
+        port: 8080,
         host: '0.0.0.0',
       },
       plugins: [],
