@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Script Injector by ExploitZ3r0</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              background: '#020617',
+              foreground: '#f8fafc',
+              card: 'rgba(30, 41, 59, 0.5)',
+              'card-foreground': '#f8fafc',
+              primary: '#3b82f6',
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out',
+              'slide-up': 'slideUp 0.5s ease-out',
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideUp: {
+                '0%': { transform: 'translateY(20px)', opacity: '0' },
+                '100%': { transform: 'translateY(0)', opacity: '1' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+
+    <!-- JSZip for ZIP creation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            background-color: #020617;
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Glassmorphism & Utilities */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .grid-pattern {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        }
+
+        .gradient-bg {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at top, #1e293b 0%, #020617 100%);
+            z-index: -10;
+            pointer-events: none;
+        }
+
+        /* Modal Transitions */
+        .modal {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .modal.open .modal-content {
+            transform: scale(1);
+        }
+    </style>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="min-h-screen grid-pattern selection:bg-blue-500/30">
+    <div class="gradient-bg"></div>
+
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <header class="mb-12 text-center space-y-4 animate-slide-up">
+            <h1 class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 pb-2">
+                html scripts inject used for ExploitZ3r0BOT by ExploitZ3r0
+            </h1>
+            <p className="text-slate-400 max-w-2xl mx-auto mt-4 text-lg text-slate-400">
+                Secure, client-side batch injection tool for HTML documents.
+            </p>
+        </header>
+
+        <!-- Info Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <!-- Card 1 -->
+            <div class="glass-card rounded-xl p-6 animate-slide-up" style="animation-delay: 0.1s">
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-emerald-400"></i>
+                    </div>
+                    <h3 class="font-semibold text-lg text-slate-100">Privacy First</h3>
+                </div>
+                <p class="text-sm text-slate-400">All processing happens 100% locally on your device.</p>
+            </div>
+            <!-- Card 2 -->
+            <div class="glass-card rounded-xl p-6 animate-slide-up" style="animation-delay: 0.2s">
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                        <i data-lucide="layers" class="w-6 h-6 text-blue-400"></i>
+                    </div>
+                    <h3 class="font-semibold text-lg text-slate-100">Batch Processing</h3>
+                </div>
+                <p class="text-sm text-slate-400">Process unlimited HTML files. Download as ZIP.</p>
+            </div>
+            <!-- Card 3 -->
+            <div class="glass-card rounded-xl p-6 animate-slide-up" style="animation-delay: 0.3s">
+                <div class="flex items-center space-x-3 mb-2">
+                    <div class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                        <i data-lucide="zap" class="w-6 h-6 text-amber-400"></i>
+                    </div>
+                    <h3 class="font-semibold text-lg text-slate-100">Smart Injection</h3>
+                </div>
+                <p class="text-sm text-slate-400">Intelligent structure detection for optimal script placement.</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Sidebar / Config -->
+            <div class="lg:col-span-4 xl:col-span-3 animate-slide-up" style="animation-delay: 0.4s">
+                <div class="glass-card rounded-xl p-6 sticky top-6">
+                    <div class="flex items-center space-x-2 mb-6 border-b border-slate-800 pb-4">
+                        <i data-lucide="settings" class="w-5 h-5 text-blue-400"></i>
+                        <h2 class="text-lg font-semibold text-white">Injection Config</h2>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="space-y-4">
+                            <label class="text-slate-400 text-xs uppercase tracking-wider block">Preconfigured Scripts</label>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-2">
+                                    <input type="checkbox" id="chk-bot" class="h-4 w-4 rounded border-slate-700 bg-slate-900 text-blue-600 focus:ring-blue-600">
+                                    <label for="chk-bot" class="text-sm font-medium text-slate-300 cursor-pointer">ExploitZ3r0BOT</label>
+                                </div>
+                                <p class="text-xs text-slate-500 ml-6 pl-1 truncate">src=".../games/bot/exploitz3r0bot.js"</p>
+
+                                <div class="flex items-center space-x-2">
+                                    <input type="checkbox" id="chk-ai" class="h-4 w-4 rounded border-slate-700 bg-slate-900 text-blue-600 focus:ring-blue-600">
+                                    <label for="chk-ai" class="text-sm font-medium text-slate-300 cursor-pointer">AI Chatbot Widget</label>
+                                </div>
+                                <p class="text-xs text-slate-500 ml-6 pl-1 truncate">src=".../ww/ai.js"</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 pt-2">
+                            <label class="text-slate-400 text-xs uppercase tracking-wider block">Custom Injection</label>
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="chk-custom" class="h-4 w-4 rounded border-slate-700 bg-slate-900 text-blue-600 focus:ring-blue-600">
+                                <label for="chk-custom" class="text-sm font-medium text-slate-300 cursor-pointer">Enable Custom Script</label>
+                            </div>
+
+                            <div id="custom-script-container" class="space-y-2 hidden transition-all duration-300">
+                                <div class="flex items-center space-x-2 text-slate-400 text-xs">
+                                    <i data-lucide="code-2" class="w-3 h-3"></i>
+                                    <span>Javascript or HTML Snippet</span>
+                                </div>
+                                <textarea id="txt-custom" rows="6" placeholder="<script>console.log('Hello');</script>" 
+                                    class="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:ring-2 focus:ring-blue-600 focus:outline-none"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-8 xl:col-span-9 space-y-6 animate-slide-up" style="animation-delay: 0.5s">
+                
+                <!-- Upload Area -->
+                <div id="drop-zone" class="glass-card rounded-xl overflow-hidden group relative cursor-pointer">
+                    <input type="file" id="file-input" class="hidden" multiple accept=".html,.htm">
+                    <div class="p-10 border-2 border-dashed border-slate-700 rounded-xl text-center transition-all duration-300 group-hover:border-slate-500 group-hover:bg-slate-800/50">
+                        <div class="flex flex-col items-center justify-center space-y-4">
+                            <div class="p-4 rounded-full bg-slate-900 ring-1 ring-slate-700 transition-transform duration-300 group-hover:scale-110">
+                                <i data-lucide="upload-cloud" class="w-10 h-10 text-slate-400 group-hover:text-blue-400 transition-colors"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-medium text-slate-200 mb-1">Drag & Drop HTML files</h3>
+                                <p class="text-slate-500 text-sm">or click to browse</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="px-2 py-1 rounded bg-slate-900 border border-slate-800 text-xs text-slate-500 font-mono">.html</span>
+                                <span class="px-2 py-1 rounded bg-slate-900 border border-slate-800 text-xs text-slate-500 font-mono">.htm</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions Bar -->
+                <div id="actions-bar" class="hidden flex-wrap items-center justify-between gap-4 mb-4 bg-slate-900/50 p-4 rounded-xl border border-slate-800 backdrop-blur-sm">
+                    <div class="flex items-center gap-3">
+                        <span class="inline-flex items-center rounded-full border border-slate-500/30 bg-slate-500/15 px-2.5 py-0.5 text-xs font-semibold text-slate-400">
+                            <span id="file-count">0</span> Files Processed
+                        </span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="btn-new-batch" class="inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-4 py-2 bg-slate-800 text-slate-100 hover:bg-slate-700 border border-slate-700 transition-colors">
+                            <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i> New Batch
+                        </button>
+                        <button id="btn-download-all" class="hidden inline-flex items-center justify-center rounded-md text-sm font-medium h-9 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+                            <i data-lucide="archive" class="w-4 h-4 mr-2"></i> Download All (ZIP)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- File List -->
+                <div id="file-list" class="space-y-4"></div>
+
+                <!-- History -->
+                <div id="history-container" class="glass-card rounded-xl p-6 mt-8 border-t border-slate-800 hidden">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="history" class="w-5 h-5 text-purple-400"></i>
+                            <h2 class="text-xl font-semibold text-slate-100">Processing History</h2>
+                        </div>
+                        <button id="btn-clear-history" class="inline-flex items-center justify-center rounded-md text-sm font-medium h-8 px-3 text-slate-400 hover:text-red-400 hover:bg-slate-800 transition-colors">
+                            <i data-lucide="trash-2" class="w-4 h-4 mr-2"></i> Clear Log
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-400">
+                            <thead class="bg-slate-900/50 text-slate-200 uppercase text-xs font-semibold">
+                                <tr>
+                                    <th class="px-4 py-3 rounded-l-lg">File Name</th>
+                                    <th class="px-4 py-3">Size</th>
+                                    <th class="px-4 py-3">Status</th>
+                                    <th class="px-4 py-3 rounded-r-lg text-right">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-body" class="divide-y divide-slate-800">
+                                <!-- History Items -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-20 py-8 border-t border-slate-800 text-center text-slate-500 text-sm">
+            <p>© <span id="year"></span> HTML Script Injector by ExploitZ3r0. Client-side processing only.</p>
+        </footer>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="preview-modal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="modal-content bg-slate-900 border border-slate-800 w-full max-w-6xl h-[85vh] rounded-xl shadow-2xl flex flex-col overflow-hidden">
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950">
+                <div class="flex items-center gap-3">
+                    <div class="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></div>
+                    <h3 class="text-lg font-medium text-slate-100 truncate max-w-md">Preview: <span id="preview-filename" class="text-slate-400"></span></h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button id="btn-preview-newtab" class="inline-flex items-center justify-center rounded-md text-sm font-medium h-8 px-3 text-slate-300 hover:bg-slate-800 transition-colors">
+                        <i data-lucide="external-link" class="w-4 h-4 mr-2"></i> New Tab
+                    </button>
+                    <button id="btn-close-modal" class="inline-flex items-center justify-center rounded-md h-8 w-8 text-slate-300 hover:bg-red-500/20 hover:text-red-400 transition-colors">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="flex-1 bg-white relative">
+                <iframe id="preview-iframe" title="Preview" sandbox="allow-scripts" class="w-full h-full border-none"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        // --- Constants & State ---
+        const SCRIPTS = {
+            BOT: '<script src="https://trejduu32-code.github.io/games/bot/exploitz3r0bot.js"><\/script>',
+            AI: '<script src="https://trejduu32-code.github.io/ww/ai.js"><\/script>',
+        };
+
+        let state = {
+            files: [], // { id, name, processedContent, size, status, timestamp }
+            history: [],
+        };
+
+        // --- Utils ---
+        const formatBytes = (bytes, decimals = 2) => {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        };
+
+        const generateId = () => Math.random().toString(36).substr(2, 9);
+
+        // --- Core Injection Logic ---
+        const injectScripts = (html, config) => {
+            let scriptsToInject = '';
+
+            if (config.useBot) scriptsToInject += `${SCRIPTS.BOT}\n`;
+            if (config.useAiWidget) scriptsToInject += `${SCRIPTS.AI}\n`;
+            
+            if (config.useCustom && config.customScript.trim()) {
+                const custom = config.customScript.trim();
+                if (custom.toLowerCase().includes('<script')) {
+                    scriptsToInject += `${custom}\n`;
+                } else {
+                    scriptsToInject += `<script>\n${custom}\n<\/script>\n`;
+                }
+            }
+
+            if (!scriptsToInject) return html;
+
+            const headRegex = /<head[^>]*>/i;
+            const htmlRegex = /<html[^>]*>/i;
+
+            if (headRegex.test(html)) {
+                return html.replace(headRegex, (match) => `${match}\n${scriptsToInject}`);
+            } else if (htmlRegex.test(html)) {
+                return html.replace(htmlRegex, (match) => `${match}\n<head>\n${scriptsToInject}</head>`);
+            } else {
+                return `<!DOCTYPE html>
+<html>
+<head>
+${scriptsToInject}
+</head>
+<body>
+${html}
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>`;
+            }
+        };
+
+        // --- UI Rendering ---
+        const renderFileList = () => {
+            const listEl = document.getElementById('file-list');
+            const countEl = document.getElementById('file-count');
+            const actionsBar = document.getElementById('actions-bar');
+            const btnDownloadAll = document.getElementById('btn-download-all');
+
+            listEl.innerHTML = '';
+            countEl.textContent = state.files.length;
+
+            if (state.files.length > 0) {
+                actionsBar.classList.remove('hidden');
+                actionsBar.classList.add('flex');
+                if (state.files.length > 1) {
+                    btnDownloadAll.classList.remove('hidden');
+                } else {
+                    btnDownloadAll.classList.add('hidden');
+                }
+            } else {
+                actionsBar.classList.add('hidden');
+                actionsBar.classList.remove('flex');
+            }
+
+            state.files.forEach(file => {
+                const el = document.createElement('div');
+                el.className = 'glass-card rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 group hover:border-blue-500/30 transition-colors animate-fade-in';
+                
+                const statusHtml = file.status === 'success' 
+                    ? `<span class="text-green-400 flex items-center gap-1"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Ready</span>`
+                    : `<span class="text-red-400 flex items-center gap-1"><i data-lucide="alert-circle" class="w-3 h-3"></i> Error</span>`;
+
+                const buttonsHtml = file.status === 'success' ? `
+                    <button onclick="previewFile('${file.id}')" class="inline-flex items-center justify-center rounded-md text-sm font-medium h-8 px-3 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
+                        <i data-lucide="eye" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="downloadFile('${file.id}')" class="inline-flex items-center justify-center rounded-md text-sm font-medium h-8 px-3 bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+                        <i data-lucide="download" class="w-4 h-4 mr-2"></i> Download
+                    </button>
+                ` : '';
+
+                el.innerHTML = `
+                    <div class="flex items-center gap-4 flex-1 min-w-0">
+                        <div class="p-3 rounded-lg ${file.status === 'success' ? 'bg-blue-500/10 text-blue-400' : 'bg-red-500/10 text-red-400'}">
+                            <i data-lucide="file-code" class="w-6 h-6"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="font-medium text-slate-200 truncate">${file.name}</h4>
+                            <div class="flex items-center gap-2 text-xs text-slate-500 mt-1">
+                                <span class="font-mono">${formatBytes(file.size)}</span>
+                                <span>•</span>
+                                ${statusHtml}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                        ${buttonsHtml}
+                        <button onclick="removeFile('${file.id}')" class="inline-flex items-center justify-center rounded-md text-sm font-medium h-8 px-3 text-slate-500 hover:text-red-400 hover:bg-slate-800/50 transition-colors">
+                            <i data-lucide="trash" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+                listEl.appendChild(el);
+            });
+            lucide.createIcons();
+        };
+
+        const renderHistory = () => {
+            const container = document.getElementById('history-container');
+            const tbody = document.getElementById('history-body');
+            
+            if (state.history.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            container.classList.remove('hidden');
+            tbody.innerHTML = '';
+
+            state.history.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-800/30 transition-colors border-b border-slate-800/50 last:border-0';
+                
+                const badgeClass = item.status === 'success' 
+                    ? "bg-green-500/15 text-green-400 border-green-500/30"
+                    : "bg-red-500/15 text-red-400 border-red-500/30";
+
+                const timeString = new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-medium text-slate-300">${item.fileName}</td>
+                    <td class="px-4 py-3 font-mono text-xs">${formatBytes(item.fileSize)}</td>
+                    <td class="px-4 py-3">
+                        <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${badgeClass}">
+                            ${item.status.toUpperCase()}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-right text-xs text-slate-500">
+                        <div class="flex items-center justify-end gap-1">
+                            <i data-lucide="clock" class="w-3 h-3"></i> ${timeString}
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        };
+
+        // --- Event Handlers & Actions ---
+
+        const getConfig = () => ({
+            useBot: document.getElementById('chk-bot').checked,
+            useAiWidget: document.getElementById('chk-ai').checked,
+            useCustom: document.getElementById('chk-custom').checked,
+            customScript: document.getElementById('txt-custom').value,
+        });
+
+        const processFiles = async (files) => {
+            const config = getConfig();
+            
+            for (const file of files) {
+                if (!file.name.endsWith('.html') && !file.name.endsWith('.htm')) continue;
+
+                const id = generateId();
+                const historyItem = {
+                    id,
+                    fileName: file.name,
+                    fileSize: file.size,
+                    timestamp: Date.now(),
+                    status: 'pending'
+                };
+
+                try {
+                    const text = await file.text();
+                    const processedHtml = injectScripts(text, config);
+                    
+                    state.files.push({
+                        id,
+                        name: file.name,
+                        originalContent: text,
+                        processedContent: processedHtml,
+                        size: file.size,
+                        timestamp: Date.now(),
+                        status: 'success'
+                    });
+
+                    historyItem.status = 'success';
+                } catch (e) {
+                    state.files.push({
+                        id,
+                        name: file.name,
+                        size: file.size,
+                        status: 'error',
+                        errorMessage: 'Failed to read'
+                    });
+                    historyItem.status = 'error';
+                }
+
+                state.history.unshift(historyItem);
+                if (state.history.length > 10) state.history.pop();
+                localStorage.setItem('injector_history', JSON.stringify(state.history));
+            }
+
+            renderFileList();
+            renderHistory();
+        };
+
+        window.removeFile = (id) => {
+            state.files = state.files.filter(f => f.id !== id);
+            renderFileList();
+        };
+
+        window.downloadFile = (id) => {
+            const file = state.files.find(f => f.id === id);
+            if (file) {
+                const blob = new Blob([file.processedContent], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `injected_${file.name}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        };
+
+        // --- Preview Logic ---
+        let currentPreviewBlobUrl = null;
+
+        window.previewFile = (id) => {
+            const file = state.files.find(f => f.id === id);
+            if (!file) return;
+
+            document.getElementById('preview-filename').textContent = file.name;
+            const iframe = document.getElementById('preview-iframe');
+            iframe.srcdoc = file.processedContent;
+
+            const modal = document.getElementById('preview-modal');
+            modal.classList.add('open');
+
+            // Setup new tab button
+            const btnNewTab = document.getElementById('btn-preview-newtab');
+            btnNewTab.onclick = () => {
+                const blob = new Blob([file.processedContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                window.open(url, '_blank');
+            };
+        };
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Icons
+            lucide.createIcons();
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Load History
+            const savedHistory = localStorage.getItem('injector_history');
+            if (savedHistory) {
+                try {
+                    state.history = JSON.parse(savedHistory);
+                    renderHistory();
+                } catch (e) { console.error("History parse error", e); }
+            }
+
+            // Custom Script Toggle
+            const chkCustom = document.getElementById('chk-custom');
+            const customContainer = document.getElementById('custom-script-container');
+            chkCustom.addEventListener('change', (e) => {
+                if(e.target.checked) {
+                    customContainer.classList.remove('hidden');
+                } else {
+                    customContainer.classList.add('hidden');
+                }
+            });
+
+            // File Upload (Drag & Drop)
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+
+            dropZone.addEventListener('click', () => fileInput.click());
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('border-blue-500', 'bg-blue-500/10');
+            });
+
+            ['dragleave', 'dragend'].forEach(type => {
+                dropZone.addEventListener(type, () => {
+                    dropZone.classList.remove('border-blue-500', 'bg-blue-500/10');
+                });
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('border-blue-500', 'bg-blue-500/10');
+                if (e.dataTransfer.files.length) processFiles(e.dataTransfer.files);
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length) processFiles(e.target.files);
+                fileInput.value = ''; // reset
+            });
+
+            // Buttons
+            document.getElementById('btn-new-batch').addEventListener('click', () => {
+                state.files = [];
+                renderFileList();
+            });
+
+            document.getElementById('btn-clear-history').addEventListener('click', () => {
+                state.history = [];
+                localStorage.removeItem('injector_history');
+                renderHistory();
+            });
+
+            document.getElementById('btn-download-all').addEventListener('click', () => {
+                const zip = new JSZip();
+                state.files.forEach(file => {
+                    if (file.status === 'success') {
+                        zip.file(`injected_${file.name}`, file.processedContent);
+                    }
+                });
+                zip.generateAsync({ type: 'blob' }).then((content) => {
+                    const url = URL.createObjectURL(content);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'injected_files.zip';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                });
+            });
+
+            // Modal Close
+            const closeModal = () => {
+                document.getElementById('preview-modal').classList.remove('open');
+                document.getElementById('preview-iframe').srcdoc = ''; // clear content
+            };
+
+            document.getElementById('btn-close-modal').addEventListener('click', closeModal);
+            document.getElementById('preview-modal').addEventListener('click', closeModal);
+        });
+    </script>
+</body>
+</html>

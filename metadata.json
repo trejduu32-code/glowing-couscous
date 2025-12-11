@@ -1,0 +1,5 @@
+{
+  "name": "HTML Script Injector",
+  "description": "A client-side tool to batch inject scripts into HTML files with smart structure detection.",
+  "requestFramePermissions": []
+}
